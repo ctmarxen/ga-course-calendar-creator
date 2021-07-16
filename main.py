@@ -1,14 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_bootstrap import Bootstrap
-import os
-from dotenv import load_dotenv
 from datetime import datetime, date, timedelta
 from workalendar.usa import UnitedStates
 
 app = Flask(__name__)
-Bootstrap(app)
-
-
 
 cal = UnitedStates()
 
