@@ -55,6 +55,23 @@
 
 
     <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+    <p class="mt-5 mb-3">GA Recognized Student Holidays</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">2021</th>
+          <th scope="col">2022</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for holiday in holidays: %}
+      <tr>
+        <th scope="row">{{ holiday[0] }}</th>
+         <td>{{ holiday[1] }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
 
     <p class="mt-5 mb-3 text-muted">Handcrafted by Chad Marxen &copy; 2021</p>
   </form>

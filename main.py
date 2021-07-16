@@ -1,32 +1,51 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
+from flask_bootstrap import Bootstrap
+import os
+from dotenv import load_dotenv
 from datetime import datetime, date, timedelta
 from workalendar.usa import UnitedStates
 
 app = Flask(__name__)
+Bootstrap(app)
 
-day = datetime.now()
+if os.environ.get('SECRET_KEY'):
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+else:
+    load_dotenv()
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
-# Monday = 0 - 0
-# Tuesday = 4.25 - 1
-# Wednesday = 4.25 - 2
-# Thursday = 2 - 3
-# Friday = 0 - 4
-# Saturday = 8 - 5
-# Sunday = 0 - 6
+
 
 cal = UnitedStates()
 
+course_dates = []
+holidays = []
+extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 26), date(2021, 11, 27), date(2021, 12, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19), date(2022, 5, 28), date(2022, 6, 17), date(2022, 6, 18), date(2022, 6, 19), date(2022, 7, 2), date(2022, 9, 3), date(2022, 11, 12), date(2022, 11, 23), date(2022, 11, 25), date(2022, 11, 26), date(2022, 12, 24), date(2022, 12, 27), date(2022, 12, 28), date(2022, 12, 29), date(2022, 12, 30), date(2022, 12, 31)]
+
+holidays21 = []
+holidays22 = []
+day_tracker2 = datetime(2021, 7, 1)
+
+while day_tracker2.year < 2023:
+    if cal.is_holiday(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year), extra_holidays=extra_holidays) and cal.get_holiday_label(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year)) != 'Columbus Day':
+        if day_tracker2.year == 2021:
+            holidays21.append(day_tracker2.date().strftime("%m-%d-%Y"))
+        else:
+            holidays22.append(day_tracker2.date().strftime("%m-%d-%Y"))
+    day_tracker2 += timedelta(days=1)
+
+for _ in range(1,12):
+    holidays21.append('')
+print(len(holidays21))
+print(len(holidays22))
 #need to add in choice of three day or four day
 def course_calculator(month, day, year, type, hours=0):
     total_hours = 0
-    course_dates = []
-    holidays = []
     day_tracker = datetime(year, month, day)
-    extra_holidays = [date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19)]
     while total_hours < 420:
         while type == 'three' and total_hours < 420:
             # can add holidays to this I believe, which could be stored in a database
-            if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays):
+            if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
                 if day_tracker.weekday() == 1:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
@@ -47,7 +66,7 @@ def course_calculator(month, day, year, type, hours=0):
             if day_tracker.weekday() == 6:
                 type = "four"
         while type == 'four' and total_hours < 420:
-            if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays):
+            if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
                 if day_tracker.weekday() == 1:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
@@ -83,6 +102,7 @@ def course_calculator(month, day, year, type, hours=0):
 
 @app.route("/", methods=["GET","POST"])
 def home():
+    total_holidays = zip(holidays21, holidays22)
     if request.method == "POST":
         first_week = request.form.get("first-week")
         print(first_week)
@@ -94,7 +114,7 @@ def home():
         day = int(divided_date[2])
         data = course_calculator(year=year, month=month, day=day, type=first_week)
         return render_template("result.html", data=data, start=start_date)
-    return render_template("index.html")
+    return render_template("index.html", holidays=total_holidays)
 
 
 # Press the green button in the gutter to run the script.
