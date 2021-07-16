@@ -8,12 +8,6 @@ from workalendar.usa import UnitedStates
 app = Flask(__name__)
 Bootstrap(app)
 
-if os.environ.get('SECRET_KEY'):
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-else:
-    load_dotenv()
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
 
 
 cal = UnitedStates()
