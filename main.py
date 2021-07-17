@@ -13,6 +13,7 @@ extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2
 holidays21 = []
 holidays22 = []
 day_tracker2 = datetime(2021, 7, 1)
+dates_by_week = []
 
 while day_tracker2.year < 2023:
     if cal.is_holiday(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year), extra_holidays=extra_holidays) and cal.get_holiday_label(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year)) != 'Columbus Day':
@@ -26,58 +27,110 @@ for _ in range(1,12):
     holidays21.append('')
 print(len(holidays21))
 print(len(holidays22))
+
 #need to add in choice of three day or four day
-def course_calculator(month, day, year, type, hours=0):
+def course_calculator(month, day, year, type):
     total_hours = 0
     day_tracker = datetime(year, month, day)
-    while total_hours < 420:
-        while type == 'three' and total_hours < 420:
+    week_dates = []
+    if type == 'three' or type == 'four':
+        hour_goal = 420
+    else:
+        hour_goal = 480
+    while total_hours < hour_goal:
+        while type == 'three' and total_hours < hour_goal:
             # can add holidays to this I believe, which could be stored in a database
             if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
                 if day_tracker.weekday() == 1:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 4.25
                 # Wednesday
                 elif day_tracker.weekday() == 2:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 4.25
                 # Saturday
                 elif day_tracker.weekday() == 5:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 8
             else:
-                holidays.append(day_tracker.date().strftime("%m-%d-%Y"))
+                if day_tracker.weekday() in [1, 2, 5]:
+                    holidays.append(day_tracker.date().strftime("%m-%d-%Y"))
             # after adding hours, move forward a day
             day_tracker += timedelta(days=1)
             # Change weektype if the day is Sunday
             if day_tracker.weekday() == 6:
+                if week_dates != []:
+                    dates_by_week.append(week_dates)
+                    week_dates = []
                 type = "four"
-        while type == 'four' and total_hours < 420:
+        while type == 'four' and total_hours < hour_goal:
             if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
                 if day_tracker.weekday() == 1:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 4.25
                 # Wednesday
                 elif day_tracker.weekday() == 2:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 4.25
                 # Thursday
                 elif day_tracker.weekday() == 3:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 2
                 # Saturday
                 elif day_tracker.weekday() == 5:
                     course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
                     total_hours += 8
             else:
-                holidays.append(day_tracker.date().strftime("%m-%d-%Y"))
+                if day_tracker.weekday() in [1, 2, 3, 5]:
+                    holidays.append(day_tracker.date().strftime("%m-%d-%Y"))
             # after adding hours, move forward a day
             day_tracker += timedelta(days=1)
             # Change weektype if the day is Sunday
-            if day_tracker.weekday() == 6 and total_hours < 420:
+            if day_tracker.weekday() == 6:
+                if week_dates != []:
+                    dates_by_week.append(week_dates)
+                    week_dates = []
                 type = "three"
+        while type == 'noalt' and total_hours < hour_goal:
+            if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
+                # Tuesday
+                if day_tracker.weekday() == 1:
+                    course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    total_hours += 4.25
+                # Wednesday
+                elif day_tracker.weekday() == 2:
+                    course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    total_hours += 4.25
+                # Thursday
+                elif day_tracker.weekday() == 3:
+                    course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    total_hours += 3.5
+                # Saturday
+                elif day_tracker.weekday() == 5:
+                    course_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    week_dates.append(day_tracker.date().strftime("%m-%d-%Y"))
+                    total_hours += 8
+            else:
+                if day_tracker.weekday() in [1, 2, 3, 5]:
+                    holidays.append(day_tracker.date().strftime("%m-%d-%Y"))
+            # after adding hours, move forward a day
+            day_tracker += timedelta(days=1)
+            if day_tracker.weekday() == 6:
+                if week_dates != []:
+                    dates_by_week.append(week_dates)
+                    week_dates = []
     # subtract one day to get the final day for the course
     day_tracker -= timedelta(days=1)
     print(len(course_dates))
@@ -86,7 +139,8 @@ def course_calculator(month, day, year, type, hours=0):
     print(f"Final course day: {day_tracker.date().strftime('%m-%d-%Y')}")
     print(f"Course Dates: {course_dates}")
     print(f"Holidays: {holidays}")
-    return {"hours": total_hours, "end": day_tracker.date().strftime('%m-%d-%Y'), 'dates': course_dates, 'holidays': holidays}
+    print(dates_by_week)
+    return {"hours": total_hours, "end": day_tracker.date().strftime('%m-%d-%Y'), 'weeks': dates_by_week, 'holidays': holidays}
 
 @app.route("/", methods=["GET","POST"])
 def home():

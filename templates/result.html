@@ -58,8 +58,16 @@
     <p class="lead">Start Date: {{ start }}</p>
     <p class="lead">Total Hours: {{ data.hours }}</p>
     <p class="lead">End Date: {{ data.end }}</p>
-    <p class="lead">Holidays: {{ data.holidays }}</p>
-    <p class="lead">Class Dates: {{ data.dates }}</p>
+    <p class="lead">Holidays:</p>
+    <ul class="list-group">
+      <li class="list-group-item">{% for holiday in data.holidays: %} {{ holiday }} | {% endfor %}</li>
+    </ul>
+    <p class="lead">Class Dates:</p>
+    <ul class="list-group">
+      {% for week in data.weeks: %}
+      <li class="list-group-item">{% for day in week: %} {{ day }} | {% endfor %}</li>
+      {% endfor %}
+    </ul>
   </div>
 </main>
 
