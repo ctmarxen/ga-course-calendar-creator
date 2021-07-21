@@ -67,6 +67,8 @@ def course_calculator(month, day, year, type):
                     dates_by_week.append(week_dates)
                     week_dates = []
                 type = "four"
+            if total_hours >= hour_goal:
+                dates_by_week.append(week_dates)
         while type == 'four' and total_hours < hour_goal:
             if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
@@ -100,6 +102,8 @@ def course_calculator(month, day, year, type):
                     dates_by_week.append(week_dates)
                     week_dates = []
                 type = "three"
+            if total_hours >= hour_goal:
+                dates_by_week.append(week_dates)
         while type == 'noalt' and total_hours < hour_goal:
             if not cal.is_holiday(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year), extra_holidays=extra_holidays) or cal.get_holiday_label(date(day=day_tracker.day, month=day_tracker.month, year=day_tracker.year)) == 'Columbus Day':
                 # Tuesday
@@ -131,6 +135,8 @@ def course_calculator(month, day, year, type):
                 if week_dates != []:
                     dates_by_week.append(week_dates)
                     week_dates = []
+            if total_hours >= hour_goal:
+                dates_by_week.append(week_dates)
     # subtract one day to get the final day for the course
     day_tracker -= timedelta(days=1)
     print(len(course_dates))
