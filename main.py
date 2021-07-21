@@ -8,7 +8,7 @@ cal = UnitedStates()
 
 course_dates = []
 holidays = []
-extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 26), date(2021, 11, 27), date(2021, 12, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19), date(2022, 5, 28), date(2022, 6, 17), date(2022, 6, 18), date(2022, 6, 19), date(2022, 7, 2), date(2022, 9, 3), date(2022, 11, 12), date(2022, 11, 23), date(2022, 11, 25), date(2022, 11, 26), date(2022, 12, 24), date(2022, 12, 27), date(2022, 12, 28), date(2022, 12, 29), date(2022, 12, 30), date(2022, 12, 31)]
+extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 26), date(2021, 11, 27), date(2021, 12, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19), date(2022, 5, 28), date(2022, 6, 18), date(2022, 6, 19), date(2022, 7, 2), date(2022, 9, 3), date(2022, 11, 12), date(2022, 11, 23), date(2022, 11, 25), date(2022, 11, 26), date(2022, 12, 24), date(2022, 12, 27), date(2022, 12, 28), date(2022, 12, 29), date(2022, 12, 30), date(2022, 12, 31)]
 
 holidays21 = []
 holidays22 = []
@@ -23,7 +23,7 @@ while day_tracker2.year < 2023:
             holidays22.append(day_tracker2.date().strftime("%m-%d-%Y"))
     day_tracker2 += timedelta(days=1)
 
-for _ in range(1,12):
+for _ in range(1,11):
     holidays21.append('')
 print(len(holidays21))
 print(len(holidays22))
