@@ -11,7 +11,6 @@ extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2
 holidays21 = []
 holidays22 = []
 day_tracker2 = datetime(2021, 7, 1)
-dates_by_week = []
 
 while day_tracker2.year < 2023:
     if cal.is_holiday(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year), extra_holidays=extra_holidays) and cal.get_holiday_label(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year)) != 'Columbus Day':
@@ -30,6 +29,7 @@ print(len(holidays22))
 def course_calculator(month, day, year, type):
     holidays = []
     course_dates = []
+    dates_by_week = []
     total_hours = 0
     day_tracker = datetime(year, month, day)
     week_dates = []
