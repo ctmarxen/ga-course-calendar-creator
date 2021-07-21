@@ -6,8 +6,6 @@ app = Flask(__name__)
 
 cal = UnitedStates()
 
-course_dates = []
-holidays = []
 extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 26), date(2021, 11, 27), date(2021, 12, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19), date(2022, 5, 28), date(2022, 6, 18), date(2022, 6, 19), date(2022, 7, 2), date(2022, 9, 3), date(2022, 11, 12), date(2022, 11, 23), date(2022, 11, 25), date(2022, 11, 26), date(2022, 12, 24), date(2022, 12, 27), date(2022, 12, 28), date(2022, 12, 29), date(2022, 12, 30), date(2022, 12, 31)]
 
 holidays21 = []
@@ -30,6 +28,8 @@ print(len(holidays22))
 
 #need to add in choice of three day or four day
 def course_calculator(month, day, year, type):
+    holidays = []
+    course_dates = []
     total_hours = 0
     day_tracker = datetime(year, month, day)
     week_dates = []
@@ -144,7 +144,6 @@ def course_calculator(month, day, year, type):
 
 @app.route("/", methods=["GET","POST"])
 def home():
-    total_holidays = zip(holidays21, holidays22)
     if request.method == "POST":
         first_week = request.form.get("first-week")
         print(first_week)
@@ -156,7 +155,7 @@ def home():
         day = int(divided_date[2])
         data = course_calculator(year=year, month=month, day=day, type=first_week)
         return render_template("result.html", data=data, start=start_date)
-    return render_template("index.html", holidays=total_holidays)
+    return render_template("index.html", holidays=zip(holidays21, holidays22))
 
 
 # Press the green button in the gutter to run the script.
