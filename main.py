@@ -8,22 +8,22 @@ cal = UnitedStates()
 
 extra_holidays = [date(2021, 7, 3), date(2021, 9, 4), date(2021, 11, 24), date(2021, 11, 26), date(2021, 11, 27), date(2021, 12, 27), date(2021, 12, 28), date(2021, 12, 29), date(2021, 12, 30), date(2022, 1, 15), date(2022, 2, 19), date(2022, 5, 28), date(2022, 6, 18), date(2022, 6, 19), date(2022, 7, 2), date(2022, 9, 3), date(2022, 11, 12), date(2022, 11, 23), date(2022, 11, 25), date(2022, 11, 26), date(2022, 12, 24), date(2022, 12, 27), date(2022, 12, 28), date(2022, 12, 29), date(2022, 12, 30), date(2022, 12, 31), date(2023, 1, 2), date(2023, 1, 14), date(2023, 1, 16), date(2023, 2, 18), date(2023, 2, 20), date(2023, 5, 27), date(2023, 5, 29), date(2023, 6, 17), date(2023, 6, 19), date(2023, 7, 1), date(2023, 7, 4), date(2023, 9, 2), date(2023, 9, 4), date(2023, 11, 10), date(2023, 11, 11), date(2023, 11, 22), date(2023, 11, 23), date(2023, 11, 24), date(2023, 11, 25), date(2023, 12, 23), date(2023, 12, 25), date(2023, 12, 26), date(2023, 12, 27), date(2023, 12, 28), date(2023, 12, 29), date(2023, 12, 30), date(2024, 1, 1)]
 
-holidays21 = []
 holidays22 = []
-day_tracker2 = datetime(2021, 7, 1)
+holidays23 = []
+day_tracker2 = datetime(2022, 1, 1)
 
-while day_tracker2.year < 2023:
+while day_tracker2.year < 2024:
     if cal.is_holiday(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year), extra_holidays=extra_holidays) and cal.get_holiday_label(date(day=day_tracker2.day, month=day_tracker2.month, year=day_tracker2.year)) != 'Columbus Day':
-        if day_tracker2.year == 2021:
-            holidays21.append(day_tracker2.date().strftime("%m-%d-%Y"))
-        else:
+        if day_tracker2.year == 2022:
             holidays22.append(day_tracker2.date().strftime("%m-%d-%Y"))
+        else:
+            holidays23.append(day_tracker2.date().strftime("%m-%d-%Y"))
     day_tracker2 += timedelta(days=1)
 
 for _ in range(1,11):
-    holidays21.append('')
-print(len(holidays21))
+    holidays22.append('')
 print(len(holidays22))
+print(len(holidays23))
 
 #need to add in choice of three day or four day
 def course_calculator(month, day, year, type):
@@ -161,7 +161,7 @@ def home():
         day = int(divided_date[2])
         data = course_calculator(year=year, month=month, day=day, type=first_week)
         return render_template("result.html", data=data, start=start_date)
-    return render_template("index.html", holidays=zip(holidays21, holidays22))
+    return render_template("index.html", holidays=zip(holidays22, holidays23))
 
 
 # Press the green button in the gutter to run the script.
